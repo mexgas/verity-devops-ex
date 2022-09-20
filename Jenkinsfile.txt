@@ -2,7 +2,21 @@ pipeline {
     agent any
     stages {
 		
-		
+      stage('Clean'){
+        steps{
+          sh 'mvn clean'
+        }
+      }
+      stage('PMD'){
+        steps{
+          sh 'mvn site'
+        }
+      }
+      stage('Compile'){
+        steps{
+          sh 'mvn compile'
+        }
+      }
 		// ******ALL CODE TO BE ADDED BELOW THIS COMMENT******
 		
 	
