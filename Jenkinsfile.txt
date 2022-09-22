@@ -7,6 +7,7 @@ pipeline {
           sh 'mvn clean'
         }
       }
+      
       stage('PMD'){
         steps{
           sh 'mvn site'
@@ -15,6 +16,16 @@ pipeline {
       stage('Compile'){
         steps{
           sh 'mvn compile'
+        }
+      }
+      stage('Unit Test'){
+        steps{
+          sh 'mvn test'
+        }
+      }
+      post{
+        always{
+           junit 'target/surefire-reports/*.xml'
         }
       }
 		// ******ALL CODE TO BE ADDED BELOW THIS COMMENT******
