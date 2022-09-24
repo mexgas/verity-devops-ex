@@ -63,9 +63,10 @@ pipeline {
         //Code starts for stage Code Coverage
         stage('Code Coverage') {
             steps {
-              step {[
+              // generate
+              step ([
                 $class: 'JacocoPublisher'
-              ]}
+              ])
             }
         }
         //Code ends for stage BDD Test    
