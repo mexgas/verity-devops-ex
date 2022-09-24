@@ -70,7 +70,14 @@ pipeline {
             }
         }
         //Code ends for stage BDD Test    
-        
+        //Code starts for stage API Test
+		stage('API Test') {
+            steps {
+				//Change git url below as per your forked github repository URL
+				git url: 'https://github.com/umangsaltuniv/EMAPITests-ex.git'
+            	sh 'mvn -Dtest=ExpenseManagerAPITest test'
+            }
+        }
         
         
         // ******ALL CODE TO BE ADDED ABOVE THIS COMMENT******
