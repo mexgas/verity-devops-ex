@@ -18,6 +18,18 @@ pipeline {
           sh 'mvn compile'
         }
       }
+      stage('Code Analysis') {
+        steps {
+          script {
+              scannerHome = tool 'sonar-scanner'
+            }
+            withSonarQubeEnv('sonar')
+            {
+            sh "${scannerHome}/bin/sonar-scanner"
+            }
+        }
+      }
+
       stage('Unit Test'){
         steps{
           sh 'mvn test'
