@@ -70,12 +70,48 @@ pipeline {
             }
         }
         //Code ends for stage BDD Test    
-        //Code starts for stage API Test
-		stage('API Test') {
+        stage('Install') {
             steps {
-				//Change git url below as per your forked github repository URL
-				git url: 'https://github.com/umangsaltuniv/EMAPITests-ex.git'
-            	sh 'mvn -Dtest=ExpenseManagerAPITest test'
+                sh 'mvn install -DskipTests'
+            }
+        }
+        //Code ends for stage Install
+        
+        
+        //Code starts for stage Launch Tomcat Server
+        stage('Launch Tomcat Server') {
+            steps {
+                sh '/tmp/apache-tomcat-9.0.20/bin/startup.sh'
+            }
+        }
+        //Code ends for stage Launch Tomcat Server
+        
+        
+        //Code starts for Deploy War on Tomcat Server
+        stage('Deploy War on Tomcat Server') {
+            steps {
+                sh 'cp /var/jenkins_home/workspace/verity-devops-ex/target/ExpenseApp-1.war /tmp/apache-tomcat-9.0.20/webapps'
+            }
+        }
+        //Code ends for stage Deploy War on Tomcat Server
+        
+        //Code starts for stage API Test
+        stage('API Test') {
+            steps {
+                //Change git url below as per your forked github repository URL
+                git url: 'https://github.com/mexgas/EMAPITests-ex.git'
+                sh 'mvn -Dtest=ExpenseManagerAPITest test'
+            }
+        }
+        //Code ends for stage API Test    
+        
+        
+        //Code starts for stage System Test
+        stage('System Test') {
+            steps {
+                //Change git url below as per your forked github repository URL
+                git url: 'https://github.com/mexgas/EMSystemTests-ex.git'
+                sh 'mvn -Dtest=ExpenseManagerSystemTest test'
             }
         }
         
