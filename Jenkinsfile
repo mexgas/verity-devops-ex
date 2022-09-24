@@ -1,69 +1,65 @@
 pipeline {
     agent any
     stages {
-			
-		// ******ALL CODE TO BE ADDED BELOW THIS COMMENT******
-			
-		//Code starts for stage Clean
+        // ******ALL CODE TO BE ADDED BELOW THIS COMMENT******
+
+        //Code starts for stage Clean
         stage('Clean') {
-            steps {
-                sh 'mvn clean'
-            }
+      steps {
+        sh 'mvn clean'
+      }
         }
-		//Code ends for stage Clean
-		
-		
-		//Code starts for stage PMD
-		stage('PMD') {
-            steps {
-                sh 'mvn site'
-            }
+        //Code ends for stage Clean
+
+        //Code starts for stage PMD
+        stage('PMD') {
+      steps {
+        sh 'mvn site'
+      }
         }
-		//Code ends for stage PMD
-		
-		
-		//Code starts for stage Compile
-		stage('Compile') {
-            steps {
-                sh 'mvn compile'
-            }
+        //Code ends for stage PMD
+
+        //Code starts for stage Compile
+        stage('Compile') {
+      steps {
+        sh 'mvn compile'
+      }
         }
-		//Code ends for stage Compile
-		
-		
-		//Code starts for stage Code Analysis
-		stage('Code Analysis') {
-            steps {
-			 script {
+        //Code ends for stage Compile
+
+        //Code starts for stage Code Analysis
+        stage('Code Analysis') {
+      steps {
+        script {
           scannerHome = tool 'sonar-scanner'
         }
-				withSonarQubeEnv('My SonarQube Server')
-				{
-				sh "${scannerHome}/bin/sonar-scanner"
-				}
-			}
-		}
-		//Code ends for stage Code Analysis
-		
-		
-		//Code starts for stage Unit Test
-        stage('Unit Test') {
-            steps {
-                sh 'mvn test'
-            }	
-            post {
-                always {
-                    junit 'target/surefire-reports/*.xml'
+        withSonarQubeEnv('My SonarQube Server')
+                {
+          sh "${scannerHome}/bin/sonar-scanner"
                 }
-            }
+      }
         }
-		//Code ends for stage Unit Test
-		
-		
-		
-		
-		
-		
-		// ******ALL CODE TO BE ADDED ABOVE THIS COMMENT******
+        //Code ends for stage Code Analysis
+
+        //Code starts for stage Unit Test
+        stage('Unit Test') {
+      steps {
+        sh 'mvn test'
+      }
+      post {
+        always {
+          junit 'target/surefire-reports/*.xml'
+        }
+      }
+        }
+        //Code ends for stage Unit Test
+        //Code starts for stage Code Coverage
+        stage('Code Coverage') {
+      steps {
+        sh '$class jacocoPublisher'
+      }
+        }
+
+    // ******ALL CODE TO BE ADDED ABOVE THIS COMMENT******
     }
 }
